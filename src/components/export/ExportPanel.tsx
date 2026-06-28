@@ -12,7 +12,7 @@ import { useEditor } from '@/store/editorStore';
 import { download, formatTime } from '@/lib/utils';
 import { Button, Field, PanelHeader, ScrollArea, Segmented, Toggle } from '@/components/ui/primitives';
 import { exportVideo, outputDimensions, projectDuration } from '@/lib/export/exporter';
-import type { ExportFormat, ExportQuality } from '@/types/editor';
+import { RESOLUTION_PRESETS, type ExportFormat, type ExportQuality } from '@/types/editor';
 
 const FORMAT_OPTIONS: { value: ExportFormat; label: string }[] = [
   { value: 'mp4', label: 'MP4' },
@@ -33,11 +33,6 @@ const FPS_OPTIONS: { value: string; label: string }[] = [
   { value: '60', label: '60' },
 ];
 
-const SCALE_OPTIONS: { value: string; label: string }[] = [
-  { value: '0.5', label: '0.5x' },
-  { value: '1', label: '1x' },
-  { value: '2', label: '2x' },
-];
 
 export default function ExportPanel() {
   const project = useEditor((s) => s.project);
@@ -120,12 +115,37 @@ export default function ExportPanel() {
           />
         </Field>
 
-        <Field label="Resolution scale" hint={`Relative to ${project.aspectRatio.width}×${project.aspectRatio.height}.`}>
-          <Segmented<string>
-            value={String(settings.resolutionScale)}
-            options={SCALE_OPTIONS}
-            onChange={(v) => updateExportSettings({ resolutionScale: parseFloat(v) })}
-          />
+        <Field
+          label="Resolution"
+          hint={
+            settings.resolution > Math.min(project.aspectRatio.width, project.aspectRatio.height)
+              ? 'Higher than the project size — upscaled for a larger export.'
+              : 'Short side of the frame; long side follows the aspect ratio.'
+          }
+        >
+          <div className="relative">
+            <select
+              value={String(settings.resolution)}
+              onChange={(e) => updateExportSettings({ resolution: parseInt(e.target.value, 10) })}
+              className="w-full cursor-pointer appearance-none rounded-lg border border-white/[0.08] bg-white/[0.04] py-2 pl-3 pr-8 text-xs font-medium text-white/80 outline-none transition hover:bg-white/[0.07] focus:ring-2 focus:ring-brand/20"
+            >
+              {RESOLUTION_PRESETS.map((r) => {
+                const d = outputDimensions(project, { ...settings, resolution: r.value });
+                return (
+                  <option key={r.value} value={r.value} className="bg-panel text-white">
+                    {r.label} · {r.tag} — {d.width}×{d.height}
+                  </option>
+                );
+              })}
+            </select>
+            <svg
+              className="pointer-events-none absolute right-2.5 top-1/2 h-3 w-3 -translate-y-1/2 text-white/40"
+              viewBox="0 0 12 12"
+              fill="none"
+            >
+              <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </div>
         </Field>
 
         <Field label="Watermark">

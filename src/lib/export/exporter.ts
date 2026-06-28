@@ -54,16 +54,25 @@ export interface ExportResult {
   filename: string;
 }
 
-/** Compute the rendered output dimensions (rounded to even numbers). */
+/**
+ * Compute the rendered output dimensions (rounded to even numbers).
+ * `settings.resolution` targets the SHORT side of the frame (e.g. 1080, 2160),
+ * and the long side is derived from the project's aspect ratio — so a 9:16
+ * project at "2160 (4K)" renders 2160×3840, a 16:9 project renders 3840×2160.
+ */
 export function outputDimensions(project: Project, settings: ExportSettings): { width: number; height: number } {
-  const scale = settings.resolutionScale || 1;
+  const aw = project.aspectRatio.width;
+  const ah = project.aspectRatio.height;
+  const baseShort = Math.max(1, Math.min(aw, ah));
+  const target = settings.resolution || baseShort;
+  const scale = target / baseShort;
   const round2 = (n: number) => {
     const r = Math.round(n);
     return r % 2 === 0 ? r : r + 1;
   };
   return {
-    width: Math.max(2, round2(project.aspectRatio.width * scale)),
-    height: Math.max(2, round2(project.aspectRatio.height * scale)),
+    width: Math.max(2, round2(aw * scale)),
+    height: Math.max(2, round2(ah * scale)),
   };
 }
 
@@ -78,19 +87,17 @@ export function projectDuration(project: Project): number {
   return max;
 }
 
-function bitrateForQuality(q: ExportQuality): number {
-  switch (q) {
-    case 'low':
-      return 2_000_000;
-    case 'medium':
-      return 5_000_000;
-    case 'high':
-      return 8_000_000;
-    case 'max':
-      return 16_000_000;
-    default:
-      return 8_000_000;
-  }
+/**
+ * Resolution-aware target bitrate. Scales with pixel count × fps so that high
+ * resolutions (up to 4K) get enough bits to look sharp instead of blocky.
+ * bits = width × height × fps × bitsPerPixel(quality), clamped to a sane range.
+ */
+function bitrateFor(width: number, height: number, fps: number, q: ExportQuality): number {
+  const bpp = q === 'low' ? 0.05 : q === 'medium' ? 0.08 : q === 'high' ? 0.13 : 0.2; // max
+  const raw = width * height * fps * bpp;
+  const min = 1_000_000;
+  const max = 120_000_000; // generous ceiling so 4K@60/max isn't starved
+  return Math.round(Math.min(max, Math.max(min, raw)));
 }
 
 function pickMimeType(format: ExportSettings['format']): { mimeType: string; ext: string; isMp4: boolean } {
@@ -1081,8 +1088,9 @@ export async function exportVideo(opts: ExportOptions): Promise<ExportResult> {
     const stream = new MediaStream(tracks);
 
     const { mimeType, ext, isMp4 } = pickMimeType(settings.format);
+    const bitrate = bitrateFor(width, height, fps, settings.quality);
     const recorderOpts: MediaRecorderOptions = {
-      videoBitsPerSecond: bitrateForQuality(settings.quality),
+      videoBitsPerSecond: bitrate,
     };
     if (mimeType) recorderOpts.mimeType = mimeType;
 
@@ -1090,7 +1098,7 @@ export async function exportVideo(opts: ExportOptions): Promise<ExportResult> {
       recorder = new MediaRecorder(stream, recorderOpts);
     } catch {
       // Retry without an explicit mimeType if the chosen one was rejected.
-      recorder = new MediaRecorder(stream, { videoBitsPerSecond: bitrateForQuality(settings.quality) });
+      recorder = new MediaRecorder(stream, { videoBitsPerSecond: bitrate });
     }
 
     const chunks: BlobPart[] = [];

@@ -54,9 +54,12 @@ Multi-track timeline · canvas preview · filters · text · stickers · overlay
 - 🎚️ **Speed & transitions** — 0.1×–4× ramping and fade / dissolve / slide / wipe / zoom / blur / glitch / whip
 - 🟢 **Chroma key** — green-screen removal with similarity, smoothness & spill controls
 - 🔊 **Audio** — per-clip volume, mute & fades; per-track mute; real-time mix
+- 🎙️ **Voiceover recording** — record straight from your mic onto an audio track at the playhead
+- 🎵 **Extract audio** — detach a video clip's audio into its own track in one click
+- 🔗 **Import from URL** — pull in any direct media link (.mp4 / .mp3 / .wav / images)
 - 🎞️ **Keyframes** — animate position, scale, rotation & opacity over time
 - 📐 **6 aspect ratios** — 9:16, 1:1, 4:5, 16:9, 3:4, 21:9
-- ⬇️ **In-browser export** — MP4 / WebM with mixed audio (and GIF via FFmpeg.wasm)
+- ⬇️ **In-browser export up to 4K** — MP4 / WebM with mixed audio (and GIF via FFmpeg.wasm); resolution presets 360p → 2160p with resolution-aware bitrate
 - ↩️ **Undo / redo**, snapping, and a sleek violet→cyan glass UI
 
 ---
@@ -95,11 +98,12 @@ npm run dev
 
 ## 🧭 A 60-second tour
 
-1. **Import** — open the **Media** panel and drag in video, images, or audio (thumbnails are generated automatically).
+1. **Import** — open the **Media** panel and drag in video, images, or audio (thumbnails are generated automatically), or paste a direct media link under **Import from link**.
 2. **Build** — click a media card to drop it on the timeline. Drag to reposition, grab the edges to trim, hit **✂** to split.
 3. **Style** — select a clip and visit **Crop**, **Adjust**, **Effects**, **Speed**, or **Transition**. Add **Text** and **Stickers** from their panels.
-4. **Brand** — open the **Mark** panel to add a text or image **watermark** (position, opacity, tiling). It renders live and burns into the export.
-5. **Export** — open **Export**, pick format/quality/resolution, and render — the file downloads straight to your machine.
+4. **Sound** — record a **voiceover** from your mic in the **Audio** panel, or **extract audio** from a video clip, then mix volume & fades.
+5. **Brand** — open the **Mark** panel to add a text or image **watermark** (position, opacity, tiling). It renders live and burns into the export.
+6. **Export** — open **Export**, choose format, quality, frame rate and **resolution (up to 4K)**, then render — the file downloads straight to your machine.
 
 ---
 

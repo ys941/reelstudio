@@ -389,7 +389,8 @@ export interface ExportSettings {
   format: ExportFormat;
   quality: ExportQuality;
   fps: number;
-  resolutionScale: number; // 0.5 / 1 / 2 of project height
+  /** Target for the SHORT side of the frame in px (e.g. 1080, 2160 = 4K). */
+  resolution: number;
   includeWatermark: boolean;
 }
 
@@ -397,9 +398,19 @@ export const DEFAULT_EXPORT_SETTINGS: ExportSettings = {
   format: 'mp4',
   quality: 'high',
   fps: 30,
-  resolutionScale: 1,
+  resolution: 1080,
   includeWatermark: true,
 };
+
+// Standard resolution presets (keyed by the SHORT side of the frame).
+export const RESOLUTION_PRESETS: { value: number; label: string; tag: string }[] = [
+  { value: 360, label: '360p', tag: 'SD' },
+  { value: 480, label: '480p', tag: 'SD' },
+  { value: 720, label: '720p', tag: 'HD' },
+  { value: 1080, label: '1080p', tag: 'Full HD' },
+  { value: 1440, label: '1440p', tag: '2K' },
+  { value: 2160, label: '2160p', tag: '4K' },
+];
 
 // ---------------------------------------------------------------------------
 // Active right-hand panel
