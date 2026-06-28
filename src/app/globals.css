@@ -1,0 +1,135 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  /* Brand tokens for use in raw CSS (sliders, scrollbars, etc.) */
+  --brand: #7c5cff;
+  --brand-2: #a78bfa;
+  --accent: #22d3ee;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  color: #e7e7ee;
+  font-family: Inter, system-ui, sans-serif;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/*
+ * App canvas: deep near-black with a subtle radial violet glow top-center
+ * plus a faint cyan haze bottom-right. Fixed attachment keeps it cheap.
+ */
+body {
+  background-color: #08080c;
+  background-image:
+    radial-gradient(60% 50% at 50% -8%, rgba(124, 92, 255, 0.14), transparent 70%),
+    radial-gradient(45% 45% at 100% 100%, rgba(34, 211, 238, 0.06), transparent 70%);
+  background-attachment: fixed;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.18);
+  background-clip: content-box;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* ---- Range slider: gradient-filled track up to the thumb ---- */
+input[type='range'] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  border-radius: 999px;
+  /* JS sets --pct (0-100) for the filled portion; default 50% */
+  background:
+    linear-gradient(90deg, var(--brand) 0%, var(--accent) 100%) no-repeat,
+    rgba(255, 255, 255, 0.08);
+  background-size: var(--pct, 50%) 100%;
+  outline: none;
+  cursor: pointer;
+}
+input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #fff;
+  cursor: pointer;
+  border: none;
+  box-shadow:
+    0 0 0 4px rgba(124, 92, 255, 0.22),
+    0 1px 4px rgba(0, 0, 0, 0.4);
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+input[type='range']:hover::-webkit-slider-thumb {
+  box-shadow:
+    0 0 0 5px rgba(124, 92, 255, 0.28),
+    0 1px 6px rgba(0, 0, 0, 0.5);
+}
+input[type='range']:active::-webkit-slider-thumb {
+  transform: scale(1.12);
+}
+input[type='range']::-moz-range-thumb {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #fff;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 0 0 4px rgba(124, 92, 255, 0.22);
+}
+
+.no-select {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Glass surface helper for panels/cards. */
+.glass {
+  background-color: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.animate-spin-slow {
+  animation: spin 1.2s linear infinite;
+}
+
+/* Respect reduced motion globally. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
