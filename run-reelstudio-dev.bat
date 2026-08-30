@@ -1,3 +1,3 @@
 @echo off
-cd /d "C:\Users\ys941\OneDrive\Desktop\Insta automate\reelstudio"
+cd /d "%~dp0"
 call npm run dev

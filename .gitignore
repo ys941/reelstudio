@@ -38,3 +38,6 @@ pnpm-debug.log*
 
 # typescript
 *.tsbuildinfo
+# Windows folder-icon cosmetics - local only, not part of the project
+desktop.ini
+folder-icon.ico
