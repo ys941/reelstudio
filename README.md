@@ -201,6 +201,13 @@ Issues and PRs are welcome! Please run `npm run lint` and make sure `npx tsc --n
 
 ---
 
+## ⭐ Star the repo
+
+If ReelStudio is useful to you, star it. There is no marketing behind this
+project — a star is genuinely how the next person ends up finding it.
+
+---
+
 ## 📄 License
 
 Released under the **MIT License** — free to use, modify and share.
