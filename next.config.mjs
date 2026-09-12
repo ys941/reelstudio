@@ -1,6 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
+  // Required so instrumentation.ts (the attribution gate) runs on boot in Next 14.
+  experimental: { instrumentationHook: true },
   // Required headers so ffmpeg.wasm (SharedArrayBuffer) works in the browser.
   async headers() {
     return [
