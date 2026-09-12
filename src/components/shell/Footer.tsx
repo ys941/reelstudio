@@ -2,6 +2,8 @@
 
 import { motion } from 'framer-motion';
 
+import { AUTHOR } from '@/lib/attribution';
+
 export default function Footer() {
   return (
     <footer className="flex h-9 shrink-0 items-center justify-center gap-1.5 border-t border-white/[0.06] bg-white/[0.02] text-[11.5px] text-white/45 backdrop-blur-xl">
@@ -17,15 +19,15 @@ export default function Footer() {
         ❤️
       </motion.span>
       <span>by</span>
-      <span className="bg-brand-gradient bg-clip-text font-semibold text-transparent">Yati Bhardwaj</span>
+      <span className="bg-brand-gradient bg-clip-text font-semibold text-transparent">{AUTHOR.name}</span>
       <span className="text-white/20">·</span>
       <a
-        href="https://github.com/ys941"
+        href={AUTHOR.url}
         target="_blank"
         rel="noopener noreferrer"
         className="text-white/40 underline-offset-2 transition hover:text-white/70 hover:underline"
       >
-        github.com/ys941
+        github.com/{AUTHOR.handle}
       </a>
     </footer>
   );
