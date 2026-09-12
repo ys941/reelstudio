@@ -1,0 +1,37 @@
+/**
+ * src/lib/attribution.ts
+ *
+ * Attribution constants — safe to import from client components.
+ *
+ * Keep this file free of Node built-ins (`node:fs`, `node:path`, …). The footer
+ * imports AUTHOR from here and is a client component, so anything Node-only
+ * would be pulled into the browser bundle. The filesystem checks live in
+ * `attribution.server.ts`.
+ *
+ * The project's attribution requirement (see COPYRIGHT.md) asks that any
+ * deployment other people can see displays visible credit to the original
+ * author.
+ */
+
+export const AUTHOR = {
+  name: "Yati Bhardwaj",
+  handle: "ys941",
+  url: "https://github.com/ys941",
+} as const;
+
+/** Accepted forms of the acknowledgement, normalised. */
+const ACCEPTED = new Set([
+  "https://github.com/ys941",
+  "http://github.com/ys941",
+  "github.com/ys941",
+  "@ys941",
+  "ys941",
+]);
+
+const normalise = (v: string) => v.trim().replace(/\/+$/, "").toLowerCase();
+
+/** True when the operator has acknowledged the attribution requirement. */
+export function hasAttributionAck(): boolean {
+  const raw = process.env.ATTRIBUTION_ACK;
+  return typeof raw === "string" && ACCEPTED.has(normalise(raw));
+}
