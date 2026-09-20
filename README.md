@@ -17,24 +17,13 @@ Multi-track timeline · canvas preview · filters · text · stickers · overlay
 
 <br/>
 
-```
-┌──────────────────────────────────────────────────────────────────┐
-│  🎬 ReelStudio      Untitled project           9:16 ▾  ⤺ ⤻  ⬇ Export │
-├────┬─────────────────────┬───────────────────────────────────────┤
-│ 🎞  │                     │                                       │
-│ 🎵  │   ◀ active panel ▶  │            � preview canvas ▾          │
-│ 🔤  │                     │                                       │
-│ ▦  │   (media / text /   │          [  9:16  reel  ]             │
-│ ✦  │    crop / fx / ...)  │                                       │
-│ ⏱  │                     │     ⏮  ▶  ⏭   00:00 ──────── 00:12     │
-│ ⬇  ├─────────────────────┴───────────────────────────────────────┤
-│    │  ▶ 00:00:00:00   ✂ ⧉ 🗑   + Track   🧲   ⊖ 50px/s ⊕          │
-│    │  ▏·····│·····│·····│·····│·····│·····│·····│·····│·····│     │
-│    │  ▣ Video ▕███████ clip ████████▏                            │
-│    │  ▣ Audio ▕∿∿∿∿∿∿∿∿∿∿∿∿∿∿∿▏                                   │
-└────┴───────────────────────────────────────────────────────────┘
-              Made with ❤️ by Yati Bhardwaj · github.com/ys941
-```
+[![Live demo](https://img.shields.io/badge/%E2%96%B6%20Try%20it%20now-Live%20demo-7C3AED?style=for-the-badge)](https://ys941.github.io/reelstudio/)
+
+**[▶ Open the live demo](https://ys941.github.io/reelstudio/)** — nothing to install, and your media never leaves your browser.
+
+<br/>
+
+[![ReelStudio editor — a 9:16 reel with a bold title on the multi-track timeline](docs/screenshots/editor.png)](https://ys941.github.io/reelstudio/)
 
 </div>
 
